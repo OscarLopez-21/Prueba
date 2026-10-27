@@ -16,6 +16,8 @@ public interface AvailabilitySlotRepository extends JpaRepository<AvailabilitySl
 
     List<AvailabilitySlot> findByServicioIdAndFechaAndDisponibleTrueOrderByHoraInicio(UUID servicioId, LocalDate fecha);
 
+    List<AvailabilitySlot> findByServicioIdAndFechaOrderByHoraInicio(UUID servicioId, LocalDate fecha);
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select s from AvailabilitySlot s where s.id = :id")
     Optional<AvailabilitySlot> findByIdForUpdate(@Param("id") UUID id);

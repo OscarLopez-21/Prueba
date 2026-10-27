@@ -1,5 +1,6 @@
 package com.ebv12.backend.service;
 
+import com.ebv12.backend.api.dto.CreateServiceRequest;
 import com.ebv12.backend.domain.ServiceEntity;
 import com.ebv12.backend.repository.ServiceRepository;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,18 @@ public class ServiceCatalogService {
 
     public ServiceCatalogService(ServiceRepository serviceRepository) {
         this.serviceRepository = serviceRepository;
+    }
+
+    public ServiceEntity createService(CreateServiceRequest request, java.util.UUID providerId) {
+        ServiceEntity service = new ServiceEntity();
+        service.setNombre(request.name());
+        service.setDescripcion(request.description());
+        service.setCategoria(request.category());
+        service.setPrecio(request.price());
+        service.setDuracionMinutos(request.durationMinutes());
+        service.setProveedorId(providerId);
+        service.setActivo(true);
+        return serviceRepository.save(service);
     }
 
     public Page<ServiceEntity> findServices(String query, String categoria, BigDecimal precioMin, BigDecimal precioMax, Pageable pageable) {

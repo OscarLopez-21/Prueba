@@ -9,6 +9,8 @@ import com.ebv12.backend.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 public class ReservationService {
 
@@ -31,6 +33,10 @@ public class ReservationService {
         }
 
         if (!slot.isDisponible()) {
+            throw new SlotNotAvailableException("El horario ya no está disponible");
+        }
+        if (slot.getFecha().isBefore(LocalDate.now())
+                || slot.getHoraInicio().plusMinutes(slot.getServicio().getDuracionMinutos()).isAfter(slot.getHoraFin())) {
             throw new SlotNotAvailableException("El horario ya no está disponible");
         }
 
